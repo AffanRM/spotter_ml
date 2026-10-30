@@ -1,0 +1,12 @@
+# Keep the supplied scorer requirements unchanged.
+-r requirements.txt
+
+# Data analysis, baselines, and tabular regression.
+scipy>=1.14,<2
+scikit-learn>=1.6,<2
+catboost>=1.2.8,<2
+joblib>=1.4,<2
+
+# Generate and verify the required PDF report.
+reportlab>=4,<5
+pypdf>=5,<7
