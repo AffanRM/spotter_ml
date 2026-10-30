@@ -1,0 +1,326 @@
+{
+  "python_version": "3.12.14",
+  "input_sha256": {
+    "train-test.csv": "892980fd20bac7ac0ca4ec31d3981fca48d52dec88e4f02642ab955f1efb40fe",
+    "validation.csv": "f6cdc7c367b397b90b319fc7ad30fd0e1893fd6a714816dda54c303b0fe71151",
+    "validation-predictions-template.csv": "79de15adabcf807b8636b9b47ebe964d451fbcb343056c44a2c4b54a219891c6",
+    "december-chart-inputs.csv": "d4a0cba969e315eae3c967268914960547dc6589568e07bf6182551bdc267e6e"
+  },
+  "development": {
+    "rows": 48000,
+    "date_min": "2025-01-01",
+    "date_max": "2025-10-31",
+    "missing_by_column": {
+      "weight": 300,
+      "market_index": 374
+    },
+    "nonpositive_weights": 292,
+    "duplicate_ids": 0,
+    "duplicate_feature_rows": 0,
+    "pickup_cities": 64,
+    "delivery_cities": 64,
+    "cities_with_inconsistent_coordinates": 0
+  },
+  "final_inputs": {
+    "rows": 12000,
+    "date_min": "2025-11-01",
+    "date_max": "2025-12-31",
+    "missing_by_column": {
+      "weight": 165,
+      "market_index": 249
+    },
+    "nonpositive_weights": 145,
+    "duplicate_ids": 0,
+    "duplicate_feature_rows": 0,
+    "pickup_cities": 72,
+    "delivery_cities": 72,
+    "cities_with_inconsistent_coordinates": 0
+  },
+  "final_novelty": {
+    "unseen_pickup_values": [
+      "Allentown",
+      "Charlotte",
+      "Chicago",
+      "Jackson",
+      "Knoxville",
+      "Laredo",
+      "Norfolk",
+      "San Diego"
+    ],
+    "unseen_pickup_rows": 725,
+    "unseen_delivery_values": [
+      "Allentown",
+      "Charlotte",
+      "Chicago",
+      "Jackson",
+      "Knoxville",
+      "Laredo",
+      "Norfolk",
+      "San Diego"
+    ],
+    "unseen_delivery_rows": 722,
+    "unseen_equipment_values": [],
+    "unseen_equipment_rows": 0,
+    "unseen_directed_lane_rows": 1461,
+    "either_city_unseen_rows": 1447
+  },
+  "backtest_novelty": {
+    "development_1": {
+      "unseen_pickup_values": [],
+      "unseen_pickup_rows": 0,
+      "unseen_delivery_values": [],
+      "unseen_delivery_rows": 0,
+      "unseen_equipment_values": [],
+      "unseen_equipment_rows": 0,
+      "unseen_directed_lane_rows": 177,
+      "either_city_unseen_rows": 0
+    },
+    "development_2": {
+      "unseen_pickup_values": [],
+      "unseen_pickup_rows": 0,
+      "unseen_delivery_values": [],
+      "unseen_delivery_rows": 0,
+      "unseen_equipment_values": [],
+      "unseen_equipment_rows": 0,
+      "unseen_directed_lane_rows": 52,
+      "either_city_unseen_rows": 0
+    },
+    "final_check": {
+      "unseen_pickup_values": [],
+      "unseen_pickup_rows": 0,
+      "unseen_delivery_values": [],
+      "unseen_delivery_rows": 0,
+      "unseen_equipment_values": [],
+      "unseen_equipment_rows": 0,
+      "unseen_directed_lane_rows": 21,
+      "either_city_unseen_rows": 0
+    }
+  },
+  "target_summary": {
+    "count": 48000.0,
+    "mean": 2373.9806822916667,
+    "std": 1486.4932447622946,
+    "min": 57.22,
+    "1%": 327.16880000000003,
+    "5%": 599.7385,
+    "50%": 2030.76,
+    "95%": 4953.7665,
+    "99%": 5972.834000000003,
+    "99.9%": 12854.561710000198,
+    "max": 25533.0
+  },
+  "target_iqr_upper_diagnostic": 6449.5425000000005,
+  "rows_above_target_iqr_upper": 260,
+  "rate_per_mile_summary": {
+    "count": 48000.0,
+    "mean": 2.21534716750207,
+    "std": 0.5838870842426047,
+    "min": 0.33370919413341743,
+    "1%": 1.6735214945063572,
+    "50%": 2.1453480823707856,
+    "95%": 2.735924866645637,
+    "99%": 3.1769396299902666,
+    "max": 14.125293930727675
+  },
+  "target_distance_correlation": 0.9085191518300776,
+  "quote_rpm_overall_correlation": 0.049342214089282216,
+  "missing_weights_after_cleaning": 592,
+  "backtests": [
+    {
+      "name": "development_1",
+      "train_end": "2025-04-30",
+      "validation_start": "2025-05-01",
+      "validation_end": "2025-06-30",
+      "train_rows": 19110,
+      "validation_rows": 9696
+    },
+    {
+      "name": "development_2",
+      "train_end": "2025-06-30",
+      "validation_start": "2025-07-01",
+      "validation_end": "2025-08-31",
+      "train_rows": 28806,
+      "validation_rows": 9671
+    },
+    {
+      "name": "final_check",
+      "train_end": "2025-08-31",
+      "validation_start": "2025-09-01",
+      "validation_end": "2025-10-31",
+      "train_rows": 38477,
+      "validation_rows": 9523
+    }
+  ],
+  "monthly_development": [
+    {
+      "month": "2025-01",
+      "rows": 4918,
+      "missing_weight_pct": 0.6913379422529483,
+      "invalid_weight_pct": 0.6303375355835705,
+      "missing_market_pct": 0.7320048800325335,
+      "median_distance": 950.8499999999999,
+      "median_market": 0.9329050000000001,
+      "median_quote": 2.028715,
+      "median_rate": 1915.2,
+      "median_rate_per_mile": 2.0291576557165607,
+      "quote_rpm_correlation": 0.4467029503575812,
+      "market_rpm_correlation": 0.03581348455156723
+    },
+    {
+      "month": "2025-02",
+      "rows": 4337,
+      "missing_weight_pct": 0.7608946276227807,
+      "invalid_weight_pct": 0.6917223887479825,
+      "missing_market_pct": 0.830066866497579,
+      "median_distance": 966.3,
+      "median_market": 0.99313,
+      "median_quote": 2.0604,
+      "median_rate": 1994.25,
+      "median_rate_per_mile": 2.061142796226214,
+      "quote_rpm_correlation": 0.4790422823156838,
+      "market_rpm_correlation": 0.035165258943378096
+    },
+    {
+      "month": "2025-03",
+      "rows": 5036,
+      "missing_weight_pct": 0.7148530579825259,
+      "invalid_weight_pct": 0.7942811755361397,
+      "missing_market_pct": 0.8737092930897538,
+      "median_distance": 954.5999999999999,
+      "median_market": 1.06485,
+      "median_quote": 2.13958,
+      "median_rate": 2022.92,
+      "median_rate_per_mile": 2.1392786400606116,
+      "quote_rpm_correlation": 0.4858422022906782,
+      "market_rpm_correlation": 0.058241360624206984
+    },
+    {
+      "month": "2025-04",
+      "rows": 4819,
+      "missing_weight_pct": 0.4150238638721726,
+      "invalid_weight_pct": 0.5187798298402159,
+      "missing_market_pct": 0.6432869890018675,
+      "median_distance": 956.6,
+      "median_market": 1.207125,
+      "median_quote": 2.00233,
+      "median_rate": 2044.24,
+      "median_rate_per_mile": 2.1466988540515386,
+      "quote_rpm_correlation": -0.471742155960304,
+      "market_rpm_correlation": 0.07383760320079089
+    },
+    {
+      "month": "2025-05",
+      "rows": 4913,
+      "missing_weight_pct": 0.4477915733767555,
+      "invalid_weight_pct": 0.8141664970486465,
+      "missing_market_pct": 0.875228984327295,
+      "median_distance": 953.0,
+      "median_market": 1.304025,
+      "median_quote": 1.95692,
+      "median_rate": 2065.51,
+      "median_rate_per_mile": 2.1901941557168074,
+      "quote_rpm_correlation": -0.4592295037448686,
+      "market_rpm_correlation": 0.037980413771209386
+    },
+    {
+      "month": "2025-06",
+      "rows": 4783,
+      "missing_weight_pct": 0.669036169767928,
+      "invalid_weight_pct": 0.6272214091574326,
+      "missing_market_pct": 0.8781099728204057,
+      "median_distance": 950.7,
+      "median_market": 1.27513,
+      "median_quote": 2.24699,
+      "median_rate": 2120.22,
+      "median_rate_per_mile": 2.2478847651180898,
+      "quote_rpm_correlation": 0.4766317214139114,
+      "market_rpm_correlation": 0.027017850079277376
+    },
+    {
+      "month": "2025-07",
+      "rows": 4912,
+      "missing_weight_pct": 0.5903908794788274,
+      "invalid_weight_pct": 0.4478827361563518,
+      "missing_market_pct": 0.7328990228013029,
+      "median_distance": 955.7,
+      "median_market": 1.2121,
+      "median_quote": 1.96338,
+      "median_rate": 2059.145,
+      "median_rate_per_mile": 2.1874218297132746,
+      "quote_rpm_correlation": -0.4683451936162613,
+      "market_rpm_correlation": 0.0694832937444605
+    },
+    {
+      "month": "2025-08",
+      "rows": 4759,
+      "missing_weight_pct": 0.6093717167472158,
+      "invalid_weight_pct": 0.31519226728304267,
+      "missing_market_pct": 0.6934229880226939,
+      "median_distance": 957.1,
+      "median_market": 0.98234,
+      "median_quote": 2.05223,
+      "median_rate": 2015.73,
+      "median_rate_per_mile": 2.120525234741784,
+      "quote_rpm_correlation": -0.01359521894345361,
+      "market_rpm_correlation": 0.03234144061587472
+    },
+    {
+      "month": "2025-09",
+      "rows": 4670,
+      "missing_weight_pct": 0.7066381156316917,
+      "invalid_weight_pct": 0.556745182012848,
+      "missing_market_pct": 0.6638115631691649,
+      "median_distance": 954.4,
+      "median_market": 0.88781,
+      "median_quote": 2.15975,
+      "median_rate": 2057.13,
+      "median_rate_per_mile": 2.1596216424733026,
+      "quote_rpm_correlation": 0.4814372474105241,
+      "market_rpm_correlation": 0.018946703819302094
+    },
+    {
+      "month": "2025-10",
+      "rows": 4853,
+      "missing_weight_pct": 0.659385946837008,
+      "invalid_weight_pct": 0.6799917576756644,
+      "missing_market_pct": 0.865444055223573,
+      "median_distance": 937.3,
+      "median_market": 0.95818,
+      "median_quote": 1.98584,
+      "median_rate": 2035.9,
+      "median_rate_per_mile": 2.1638275204665245,
+      "quote_rpm_correlation": -0.43397322357729556,
+      "market_rpm_correlation": 0.05639207030496581
+    }
+  ],
+  "monthly_final_inputs": [
+    {
+      "month": "2025-11",
+      "rows": 5836,
+      "missing_weight_pct": 1.4050719671007539,
+      "invalid_weight_pct": 1.3022618231665526,
+      "missing_market_pct": 1.9705277587388623,
+      "median_distance": 959.9,
+      "median_market": 0.91229,
+      "median_quote": 2.05755
+    },
+    {
+      "month": "2025-12",
+      "rows": 6164,
+      "missing_weight_pct": 1.346528228423102,
+      "invalid_weight_pct": 1.1194029850746268,
+      "missing_market_pct": 2.1739130434782608,
+      "median_distance": 947.1,
+      "median_market": 0.931515,
+      "median_quote": 2.0467500000000003
+    }
+  ],
+  "december_missing_model_features": [
+    "pickup_lat",
+    "pickup_lon",
+    "delivery_lat",
+    "delivery_lon",
+    "market_index",
+    "quote_signal"
+  ]
+}
