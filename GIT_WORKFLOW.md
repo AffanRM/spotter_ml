@@ -1,8 +1,10 @@
 # Manual Git checkpoints
 
 Commits and pushes are performed by the candidate. These commands assume
-PowerShell is open in the project folder. No Git repository existed when the
-analysis checkpoint was prepared.
+PowerShell or Git Bash/MSYS2 is open in the project folder. The first two
+checkpoints were committed and pushed to `https://github.com/AffanRM/spotter_ml.git`.
+Start with checkpoint 3 for the new changes. Earlier instructions are retained
+for reference.
 
 ## First-time initialization
 
@@ -41,13 +43,36 @@ git commit -m "feat: add reproducible data audit and temporal validation utiliti
 
 ## Connect and push
 
-Replace `YOUR_USERNAME` and `YOUR_REPOSITORY` with the empty repository you created:
+The existing remote is already configured. For a fresh repository only:
 
 ```powershell
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git remote add origin https://github.com/AffanRM/spotter_ml.git
 git push -u origin main
 ```
 
 For later checkpoints, review and stage the specific changed files, commit,
 then run `git push`. Use `git status` to see what is staged or still untracked.
 Do not run initialization or `git remote add` again once they have succeeded.
+
+## Checkpoint 3: development model comparisons
+
+With the virtual environment active, these commands work in either shell:
+
+```text
+python -m unittest discover -s tests -v
+python -m freight.benchmark
+git status
+git add .gitignore SETUP.md TASK_OVERVIEW.md readme.md GIT_WORKFLOW.md
+git add freight/features.py freight/models.py freight/benchmark.py tests/test_models.py reports/benchmark
+git diff --cached --stat
+git diff --cached --check
+git commit -m "feat: benchmark baseline and CatBoost models on temporal backtests"
+git push
+git status
+```
+
+This checkpoint keeps large generated prediction diagnostics in ignored
+`artifacts/`. Summary metrics, the experiment manifest, and the comparison report
+are committed. Fixed seeds and parameters make metrics reproducible with the
+locked environment; recorded runtimes vary by machine. September-October remains
+reserved for the later final check. No dependency additions are needed.

@@ -4,3 +4,4 @@ __pycache__/
 .pytest_cache/
 catboost_info/
 tmp/
+artifacts/

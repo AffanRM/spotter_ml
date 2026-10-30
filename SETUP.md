@@ -31,6 +31,35 @@ python --version
 
 If PowerShell blocks activation, use the direct interpreter commands above.
 
+If you prefer activation, PowerShell can permit local scripts for the current
+terminal process only:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+.\.venv\Scripts\Activate.ps1
+```
+
+For Git Bash/MSYS2, use Unix-style paths and shell activation:
+
+```bash
+cd /d/Downloads/Coding/Spotter_ML
+source .venv/Scripts/activate
+python --version
+```
+
+After activation, either shell supports:
+
+```text
+python -m freight.explore
+python -m unittest discover -s tests -v
+python -m freight.benchmark
+```
+
+The benchmark defaults to 500 CatBoost iterations and four CPU threads. Override
+with `python -m freight.benchmark --iterations 500 --threads 4` if desired.
+Changing the iteration count produces a new experiment, so retain that setting
+when comparing results. It does not evaluate the reserved final-check window.
+
 ## Recreate on another computer
 
 With Python 3.12 installed:

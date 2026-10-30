@@ -62,12 +62,13 @@ generates the chart; Spotter calculates final metrics after submission.
 
 1. Complete and verify the isolated Python environment (complete).
 2. Perform reproducible data-quality and exploratory analysis (complete; see `reports/eda/exploration.md`).
-3. Establish chronological holdouts, evaluation metrics, and simple baselines.
-4. Compare feature sets and models, checking leakage and unseen-location behavior.
+3. Establish chronological holdouts, evaluation metrics, and simple baselines (complete).
+4. Compare feature sets and models, checking leakage and unseen-location behavior (initial temporal comparison complete; location holdout still pending).
 5. Select the model using development results and retrain on eligible labeled data.
 6. Generate both prediction files and run the original scorer.
 7. Produce the report, repository instructions, and a concise Loom script.
 
-Analysis can be rerun with `python -m freight.explore`. Model training and
-prediction generation are subsequent steps. Commit/push operations are performed
+Analysis can be rerun with `python -m freight.explore`; the development model
+comparison runs with `python -m freight.benchmark`. Model selection, the reserved
+final check, and prediction generation are subsequent steps. Commit/push operations are performed
 by the candidate; commands for completed checkpoints are in `GIT_WORKFLOW.md`.

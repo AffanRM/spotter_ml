@@ -8,6 +8,7 @@ filenames. See [the assessment brief](freight-rate-ml-assessment-1-.pdf).
 - Environment and dependency setup: [SETUP.md](SETUP.md)
 - Requirements and implementation sequence: [TASK_OVERVIEW.md](TASK_OVERVIEW.md)
 - Generated data-quality analysis: [reports/eda/exploration.md](reports/eda/exploration.md)
+- Development model comparison: [reports/benchmark/benchmark.md](reports/benchmark/benchmark.md)
 - Manual Git checkpoints: [GIT_WORKFLOW.md](GIT_WORKFLOW.md)
 
 From the project folder, run:
@@ -16,11 +17,19 @@ From the project folder, run:
 .\.venv\Scripts\Activate.ps1
 python -m freight.explore
 python -m unittest discover -s tests -v
+python -m freight.benchmark
 ```
 
 Activation is optional: replace `python` with `.\.venv\Scripts\python.exe`.
 The analysis command writes reports to `reports/eda/` without changing the input
-CSVs. Model training and final prediction generation are the next checkpoint.
+CSVs. The benchmark compares eight candidates on two temporal development folds,
+writes `reports/benchmark/`, and leaves September-October unscored. It normally
+takes a few minutes on a laptop. Large row-level diagnostics go in ignored
+`artifacts/benchmark/`. Location holdouts and final model decisions come next;
+submission predictions have not been generated.
+
+In Git Bash/MSYS2, activate with `source .venv/Scripts/activate` instead. The
+subsequent `python` commands are the same in either shell.
 
 ## What to do
 
