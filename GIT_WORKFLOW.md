@@ -3,7 +3,8 @@
 Commits and pushes are performed by the candidate. These commands assume
 PowerShell or Git Bash/MSYS2 is open in the project folder. The first two
 checkpoints were committed and pushed to `https://github.com/AffanRM/spotter_ml.git`.
-Checkpoint 3 was also committed and pushed as `af62a46`. Start with checkpoint 4
+Checkpoint 3 was committed and pushed as `af62a46`, and checkpoint 4 as `cabec32`.
+Start with checkpoint 5
 for the new changes. Earlier instructions are retained
 for reference.
 
@@ -101,3 +102,28 @@ predictions already exist, there is no need to rerun the benchmark for this
 checkpoint. The tests now include city isolation in both route directions,
 target-independent city selection, and rejection of invalid development
 prediction provenance. The September-October final check is still unscored.
+
+## Checkpoint 5: frozen model policy and reserved-window evaluation
+
+The choices in `MODEL_DECISIONS.md` and `model_policy.json` were written before
+the reserved-window results were computed. The main model remains the full
+CatBoost MAE model, with a separate chart-only model for the reduced inputs.
+Scores from this window are reported without further model selection.
+
+```text
+python -m unittest discover -s tests -v
+python -m freight.final_check
+git status
+git add .gitattributes model_policy.json MODEL_DECISIONS.md
+git add freight/policy.py freight/final_check.py tests/test_policy.py reports/final_check
+git add readme.md SETUP.md TASK_OVERVIEW.md GIT_WORKFLOW.md
+git diff --cached --stat
+git diff --cached --check
+git commit -m "feat: freeze model policy and evaluate reserved temporal holdout"
+git push
+git status
+```
+
+The tests now cover invalid policy rejection, model-role contracts, and
+protection against overwriting prior final-check evidence with another
+experiment. Full-data refits and submission CSV generation come next.

@@ -1,0 +1,9 @@
+# Stable text bytes for experiment hashes on Windows and other platforms.
+* text=auto
+*.py text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.pdf binary
+*.png binary

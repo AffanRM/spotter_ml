@@ -1,0 +1,73 @@
+{
+  "input_sha256": "892980fd20bac7ac0ca4ec31d3981fca48d52dec88e4f02642ab955f1efb40fe",
+  "policy_sha256": "caa33f123816c4ba6be33e75eb8dc4d41328a334afa5ec4ae4b0f5d807df7894",
+  "implementation_sha256": {
+    "freight/data.py": "e4ad1ab58d737b18321c06d5d12bf48e486c9475d83de85deb292c4fb0568cca",
+    "freight/features.py": "90e40e6ff1b0778b850016b7f8a45979b544325129709507e1fefdeb1732618b",
+    "freight/models.py": "ce9f2422cdc9834e7755ec68387944004cc641f73c95e7ef06d08522b9ae9e29",
+    "freight/policy.py": "30d0981c7083e2d4e86a03894f69782fb6a1fd74522b024b47b1f3d4d43d6491",
+    "freight/splits.py": "13d4f1ba5f5c64413e67fdc7ba1a8330d61743e3280f5906b228fd8c6527a158",
+    "freight/benchmark.py": "ccbf089d8ab693090ca1b29d26809866b87af037bd8daf482eb7d6bc222f240e",
+    "freight/final_check.py": "240ed820c324db56c8d9b41153720dbd5327dbfb9bdf3b9342ddd170f651a925"
+  },
+  "python_version": "3.12.14",
+  "packages": {
+    "numpy": "2.5.4",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.1",
+    "catboost": "1.2.10"
+  },
+  "experiment_id": "51b63d84ed62434037462ad9b1c019c71db9389f89486b4fb248a6c5b9cb8399",
+  "frozen_policy": {
+    "policy_version": 1,
+    "main_model": "catboost_full_mae",
+    "chart_model": "catboost_chart_mae",
+    "reference_model": "equipment_rate_per_mile",
+    "iterations": 500,
+    "seed": 42,
+    "threads": 4,
+    "train_end": "2025-08-31",
+    "validation_end": "2025-10-31",
+    "selection_metric": "development pooled MAE; RMSE reported separately",
+    "unseen_city_routing": false,
+    "drop_target_outliers": false
+  },
+  "models": {
+    "reference": {
+      "name": "equipment_rate_per_mile",
+      "kind": "equipment_rpm",
+      "feature_set": "core",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    },
+    "main": {
+      "name": "catboost_full_mae",
+      "kind": "catboost",
+      "feature_set": "full",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    },
+    "chart": {
+      "name": "catboost_chart_mae",
+      "kind": "catboost",
+      "feature_set": "chart",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    }
+  },
+  "train_rows": 38477,
+  "validation_rows": 9523,
+  "train_date_min": "2025-01-01",
+  "train_date_max": "2025-08-31",
+  "validation_date_min": "2025-09-01",
+  "validation_date_max": "2025-10-31",
+  "prediction_sha256": "863b708dcfb3a9a23b9dd7276723713ab09883664f5a8f3c5f621e079f876cf4",
+  "final_check_evaluated": true,
+  "decision": "Retain predeclared configurations; no selection or retuning from final-check scores"
+}

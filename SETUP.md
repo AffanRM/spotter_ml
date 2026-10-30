@@ -54,6 +54,7 @@ python -m freight.explore
 python -m unittest discover -s tests -v
 python -m freight.benchmark
 python -m freight.robustness
+python -m freight.final_check
 ```
 
 The benchmark defaults to 500 CatBoost iterations and four CPU threads. Override
@@ -67,6 +68,23 @@ locally by the benchmark and excluded from Git. It verifies source IDs, labels,
 hashes, and scores before analyzing residuals. If you change benchmark iterations,
 use the same `--iterations` argument for robustness. Both commands leave the
 reserved September-October performance check unscored.
+
+`python -m freight.final_check` evaluates the frozen `model_policy.json` on
+September-October. It can run independently of the benchmark diagnostics. A
+repeat with the same input, implementation, policy, and environment reproduces
+the same experiment. It refuses to overwrite an existing final-check report
+from a different experiment. `.gitattributes` fixes source/CSV line endings so
+Git checkout on Windows does not change input and implementation hashes.
+
+For a different Python version or platform, preserve the original evidence and
+write a separate reproduction directory:
+
+```text
+python -m freight.final_check --output-dir reports/final_check_reproduction
+```
+
+Neither a reproduction nor a new output directory makes these labels an
+independent untouched test set. Do not use the scores for another tuning round.
 
 ## Recreate on another computer
 
