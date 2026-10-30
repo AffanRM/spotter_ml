@@ -12,6 +12,7 @@ filenames. See [the assessment brief](freight-rate-ml-assessment-1-.pdf).
 - Geographic stress tests and residuals: [reports/robustness/robustness.md](reports/robustness/robustness.md)
 - Frozen model decisions: [MODEL_DECISIONS.md](MODEL_DECISIONS.md)
 - Reserved-window evaluation: [reports/final_check/final_check.md](reports/final_check/final_check.md)
+- Submission generation audit: [reports/submission/submission.md](reports/submission/submission.md)
 - Manual Git checkpoints: [GIT_WORKFLOW.md](GIT_WORKFLOW.md)
 
 From the project folder, run:
@@ -23,6 +24,7 @@ python -m unittest discover -s tests -v
 python -m freight.benchmark
 python -m freight.robustness
 python -m freight.final_check
+python -m freight.submission
 ```
 
 Activation is optional: replace `python` with `.\.venv\Scripts\python.exe`.
@@ -38,7 +40,20 @@ run the benchmark first on a fresh clone. The selected main/chart models and
 parameters are recorded in `model_policy.json`; `freight.final_check` evaluates
 those frozen choices on September-October. It reports the predeclared baseline
 and both inference paths without selecting a new model from that window.
-Submission predictions and full-data model refits are the next checkpoint.
+The submission command refits both frozen models on all 48,000 labeled rows,
+checks native-model reload predictions, fills both output CSVs, and invokes the
+unchanged scorer. Saved models are generated locally in ignored
+`artifacts/models/`. Use `python -m freight.submission --predict-only` to reuse
+matching saved models without retraining.
+
+Generated deliverables:
+
+- [12,000 final load predictions](validation_predictions.csv)
+- [31 fixed December predictions](december_predictions.csv)
+- [Scorer-generated December chart](scorer_results/candidate_december.png)
+
+Both prediction files passed the supplied scorer. The formal report and Loom
+recording are the remaining submission deliverables.
 
 In Git Bash/MSYS2, activate with `source .venv/Scripts/activate` instead. The
 subsequent `python` commands are the same in either shell.

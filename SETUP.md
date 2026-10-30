@@ -55,6 +55,7 @@ python -m unittest discover -s tests -v
 python -m freight.benchmark
 python -m freight.robustness
 python -m freight.final_check
+python -m freight.submission
 ```
 
 The benchmark defaults to 500 CatBoost iterations and four CPU threads. Override
@@ -85,6 +86,36 @@ python -m freight.final_check --output-dir reports/final_check_reproduction
 
 Neither a reproduction nor a new output directory makes these labels an
 independent untouched test set. Do not use the scores for another tuning round.
+
+## Generate submission files
+
+With the frozen final-check experiment matching this environment, run:
+
+```text
+python -m freight.submission
+```
+
+This fits the main and chart models on all 48,000 labeled loads, saves native
+CatBoost files in ignored `artifacts/models/`, verifies reload predictions, and
+writes `validation_predictions.csv` and `december_predictions.csv`. It runs the
+supplied scorer automatically and writes `scorer_results/candidate_december.png`.
+An audit is generated in `reports/submission/`.
+
+To reuse these saved models without retraining:
+
+```text
+python -m freight.submission --predict-only
+```
+
+The saved bundle must match the frozen policy, input, implementation, and Python
+environment. A fresh clone must run the fitting command first because models
+are intentionally excluded from Git. CSV/PNG deliverables and summary audits
+are included in Git. No extra dependencies are needed.
+
+If reproducing on another Python version/platform, the original final-check
+identity will differ. Use the locked original environment for the audited
+submission command; preserve original evidence when separately reproducing
+evaluation on another environment.
 
 ## Recreate on another computer
 

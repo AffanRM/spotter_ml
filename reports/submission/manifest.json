@@ -1,0 +1,127 @@
+{
+  "frozen_experiment_id": "51b63d84ed62434037462ad9b1c019c71db9389f89486b4fb248a6c5b9cb8399",
+  "policy": {
+    "policy_version": 1,
+    "main_model": "catboost_full_mae",
+    "chart_model": "catboost_chart_mae",
+    "reference_model": "equipment_rate_per_mile",
+    "iterations": 500,
+    "seed": 42,
+    "threads": 4,
+    "train_end": "2025-08-31",
+    "validation_end": "2025-10-31",
+    "selection_metric": "development pooled MAE; RMSE reported separately",
+    "unseen_city_routing": false,
+    "drop_target_outliers": false
+  },
+  "generation_implementation_sha256": "f883eae61580362ad1294f7285c38f240e005f257ab8d3bfb289aed6a0fa6ff6",
+  "input_sha256": {
+    "train-test.csv": "892980fd20bac7ac0ca4ec31d3981fca48d52dec88e4f02642ab955f1efb40fe",
+    "validation.csv": "f6cdc7c367b397b90b319fc7ad30fd0e1893fd6a714816dda54c303b0fe71151",
+    "validation-predictions-template.csv": "79de15adabcf807b8636b9b47ebe964d451fbcb343056c44a2c4b54a219891c6",
+    "december-chart-inputs.csv": "d4a0cba969e315eae3c967268914960547dc6589568e07bf6182551bdc267e6e"
+  },
+  "scorer_sha256": "f73af4f34acf0c43cdd6e2cd6b2c0ec8b9da4420fd6fdcd69bd86e14d4868634",
+  "training_rows": 48000,
+  "training_date_min": "2025-01-01",
+  "training_date_max": "2025-10-31",
+  "final_rows": 12000,
+  "december_rows": 31,
+  "all_predictions_finite_positive": true,
+  "template_order_preserved": true,
+  "raw_inputs_unchanged": true,
+  "provided_scorer_passed": true,
+  "saved_model_reload_verified": true,
+  "output_sha256": {
+    "validation_predictions.csv": "2fe3668276c7d52fe533e2f4864c947a757f4464764e6518036f998d23c68ce8",
+    "december_predictions.csv": "2da86d310c43498142d709ab9800fc9babb0523151709ec216a32be941447673",
+    "scorer_results/candidate_december.png": "736358a1a4d8741cd3a3e77b7e6ec42f1837ca99a6654b59c6fa4984a8cb869c"
+  },
+  "models": {
+    "main": {
+      "filename": "main.cbm",
+      "sha256": "9df56b2900212c231e81295a9bb9987ccafad6b7e751bc056b5ec48e4f6f5450",
+      "configuration": {
+        "name": "catboost_full_mae",
+        "kind": "catboost",
+        "feature_set": "full",
+        "loss": "MAE",
+        "iterations": 500,
+        "seed": 42,
+        "threads": 4
+      },
+      "features": [
+        "pickup",
+        "delivery",
+        "pickup_lat",
+        "pickup_lon",
+        "delivery_lat",
+        "delivery_lon",
+        "distance",
+        "equipment",
+        "weight",
+        "market_index",
+        "quote_signal",
+        "weight_missing",
+        "weight_invalid",
+        "market_index_missing",
+        "month",
+        "day_of_week",
+        "day_of_month",
+        "day_of_year",
+        "weekend",
+        "latitude_delta",
+        "longitude_delta",
+        "coordinate_distance_miles"
+      ]
+    },
+    "chart": {
+      "filename": "chart.cbm",
+      "sha256": "7ea133c042ec0bef9a5d7513b3ef77c1beb69880c253e02c089f374632cc5d46",
+      "configuration": {
+        "name": "catboost_chart_mae",
+        "kind": "catboost",
+        "feature_set": "chart",
+        "loss": "MAE",
+        "iterations": 500,
+        "seed": 42,
+        "threads": 4
+      },
+      "features": [
+        "pickup",
+        "delivery",
+        "distance",
+        "equipment",
+        "weight",
+        "weight_missing",
+        "weight_invalid",
+        "month",
+        "day_of_week",
+        "day_of_month",
+        "day_of_year",
+        "weekend"
+      ]
+    }
+  },
+  "final_rate_summary": {
+    "count": 12000.0,
+    "mean": 2366.245414943489,
+    "std": 1367.274933423367,
+    "min": 196.9132700227883,
+    "25%": 1271.4907069906626,
+    "50%": 2040.94229736606,
+    "75%": 3379.3874371751635,
+    "max": 6711.944064313748
+  },
+  "december_rate_summary": {
+    "count": 31.0,
+    "mean": 833.3754895468863,
+    "std": 7.758456671773927,
+    "min": 817.1032379456594,
+    "25%": 826.7429166960654,
+    "50%": 833.0796130844408,
+    "75%": 840.813706070134,
+    "max": 843.5079001571546
+  },
+  "accuracy_note": "No final labels are available; scorer validates format and chart, not accuracy."
+}

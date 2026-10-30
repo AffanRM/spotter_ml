@@ -4,7 +4,7 @@ Commits and pushes are performed by the candidate. These commands assume
 PowerShell or Git Bash/MSYS2 is open in the project folder. The first two
 checkpoints were committed and pushed to `https://github.com/AffanRM/spotter_ml.git`.
 Checkpoint 3 was committed and pushed as `af62a46`, and checkpoint 4 as `cabec32`.
-Start with checkpoint 5
+Checkpoint 5 was committed and pushed as `b70e837`. Start with checkpoint 6
 for the new changes. Earlier instructions are retained
 for reference.
 
@@ -127,3 +127,26 @@ git status
 The tests now cover invalid policy rejection, model-role contracts, and
 protection against overwriting prior final-check evidence with another
 experiment. Full-data refits and submission CSV generation come next.
+
+## Checkpoint 6: full-data refits and validated submission files
+
+```text
+python -m unittest discover -s tests -v
+python -m freight.submission
+python -m freight.submission --predict-only
+git status
+git add freight/submission.py tests/test_submission.py
+git add validation_predictions.csv december_predictions.csv scorer_results/candidate_december.png reports/submission
+git add readme.md SETUP.md TASK_OVERVIEW.md GIT_WORKFLOW.md
+git diff --cached --stat
+git diff --cached --check
+git commit -m "feat: generate validated submission predictions from full-data models"
+git push
+git status
+```
+
+The first submission command refits the unchanged selected models on 48,000
+labeled rows. The second reuses saved models and should reproduce the same CSVs
+and chart. Neither command changes the raw inputs or the supplied scorer.
+Models and large diagnostics remain excluded from Git under `artifacts/`.
+The formal report and Loom recording remain to be prepared.

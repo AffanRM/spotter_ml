@@ -64,13 +64,14 @@ generates the chart; Spotter calculates final metrics after submission.
 2. Perform reproducible data-quality and exploratory analysis (complete; see `reports/eda/exploration.md`).
 3. Establish chronological holdouts, evaluation metrics, and simple baselines (complete).
 4. Compare feature sets and models, checking leakage and unseen-location behavior (temporal comparison and one fixed city stress test complete; see `reports/robustness/robustness.md`).
-5. Select the model using development results and retrain on eligible labeled data (model policy frozen and reserved September-October evaluation complete; full-data refit next).
-6. Generate both prediction files and run the original scorer.
+5. Select the model using development results and retrain on eligible labeled data (complete: frozen policy, reserved evaluation, and full-data refits).
+6. Generate both prediction files and run the original scorer (complete: 12,000 final predictions, 31 December predictions, and scorer-generated chart).
 7. Produce the report, repository instructions, and a concise Loom script.
 
 Analysis can be rerun with `python -m freight.explore`; the development model
 comparison runs with `python -m freight.benchmark`; geographic stress and error
 analysis run with `python -m freight.robustness`. Frozen choices are documented
 in `MODEL_DECISIONS.md` and evaluated by `python -m freight.final_check`.
-Full-data refitting and prediction generation are subsequent steps. Commit/push operations are performed
+Full-data refitting and prediction generation run with `python -m freight.submission`.
+The formal report and Loom preparation are next. Commit/push operations are performed
 by the candidate; commands for completed checkpoints are in `GIT_WORKFLOW.md`.
