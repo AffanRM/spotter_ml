@@ -25,6 +25,12 @@ and extracting and visually reviewing the complete one-page PDF.
 
 ## Required submission
 
+Current status: code, dependencies, prediction CSVs, scorer chart, public
+repository access, tests and hosted Windows/Linux checks are complete. The
+formal PDF/DOCX report and recorded camera-on Loom link remain outstanding.
+This document contains candidate instructions; the README presents the solution
+to reviewers.
+
 1. An accessible GitHub repository with solution code, dependencies, and run instructions.
 2. `validation_predictions.csv` with exactly `load_id,predicted_rate`, one
    finite positive prediction per supplied final ID, and exactly 12,000 rows.

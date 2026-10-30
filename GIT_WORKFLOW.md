@@ -5,7 +5,7 @@ PowerShell or Git Bash/MSYS2 is open in the project folder. The first two
 checkpoints were committed and pushed to `https://github.com/AffanRM/spotter_ml.git`.
 Checkpoint 3 was committed and pushed as `af62a46`, and checkpoint 4 as `cabec32`.
 Checkpoint 5 was committed and pushed as `b70e837`, and checkpoint 6 as `14207a8`.
-Start with checkpoint 7
+Checkpoint 7 was committed and pushed as `7d43baa`. Start with checkpoint 8
 for the new changes. Earlier instructions are retained
 for reference.
 
@@ -174,3 +174,21 @@ Its Windows/Linux hosted results are pending until that run completes. The audit
 preserves all frozen model choices and submission prediction values; regenerated
 model metadata and audit manifests can change. The clean-environment evidence
 records the audit session's reproduction of commit `14207a8` outputs.
+
+## Checkpoint 8: reviewer-facing documentation
+
+```text
+python -m freight.audit --require-saved-models
+git add readme.md PROJECT_REVIEW.md TASK_OVERVIEW.md GIT_WORKFLOW.md
+git add reports/audit/checks.json
+git diff --cached --stat
+git diff --cached --check
+git commit -m "docs: present solution results and reproducibility for reviewers"
+git push
+git status
+```
+
+The README describes the solution, results, setup, outputs, architecture and
+limitations. Candidate delivery instructions remain in `TASK_OVERVIEW.md`.
+The initial Windows/Linux hosted checks passed; no modeling code or prediction
+values changed in this documentation checkpoint.

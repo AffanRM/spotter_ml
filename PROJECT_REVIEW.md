@@ -130,7 +130,8 @@ RMSE includes those rows; no favorable trimmed metric replaces it.
    and Linux: locked install, dependency compatibility, unit tests, deliverable
    audit and employer scorer. Configuration follows the
    [official GitHub Python workflow documentation](https://docs.github.com/en/actions/tutorials/build-and-test-code/python).
-   Hosted jobs have not run yet; their first run requires the candidate's push.
+   The first Windows/Linux hosted run passed for commit `7d43baa`:
+   [Project checks](https://github.com/AffanRM/spotter_ml/actions/runs/41107921602).
 
 ## Clean-environment reproduction
 
@@ -148,9 +149,10 @@ model artifacts. In that checkout:
    current root outputs.
 
 This was a Windows x64 / CPython 3.12.14 reproduction in an independently
-installed environment. Linux CI and execution under another Python patch release
-have not been observed locally; the environment-difference behavior is covered
-by a regression test. Do not claim cross-platform byte identity.
+installed environment. Windows/Linux hosted dependency, test, artifact-audit
+and scorer checks have also passed. Full model refitting on Linux and
+cross-platform byte identity have not been established; the environment-difference
+behavior is covered by a regression test.
 
 ## Remaining risks and honest limits
 
@@ -173,5 +175,6 @@ by a regression test. Do not claim cross-platform byte identity.
 
 Prepare the formal report using these verified results and the exact supplied
 chart. Then prepare the timed Loom script/walkthrough. The candidate records the
-2-3 minute camera-on video and supplies its link. Review the first hosted CI run
-after pushing the audit fixes. Only then is the full submission ready to send.
+2-3 minute camera-on video and supplies its link. The first hosted CI run has
+passed. The formal report and accessible recorded video are the remaining
+required delivery items.

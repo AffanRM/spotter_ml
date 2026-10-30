@@ -1,107 +1,177 @@
-# Freight Rate Prediction Challenge
+# Freight Rate Prediction
 
-Predict freight load rates with chronological validation and reproducible
-CatBoost pipelines. The reserved September-October evaluation achieved
-**$116.19 MAE / $636.24 RMSE** for the main model, versus **$229.10 MAE** for
-the equipment baseline. These are internal evaluation scores, not hidden
-submission scores. The final refits use all 48,000 labeled rows.
+A reproducible regression pipeline for predicting freight load rates from route,
+equipment, weight, date, and supplied market signals. The solution compares
+baselines with CatBoost, validates on later dates, tests unfamiliar cities, and
+generates 12,000 final load predictions plus the fixed December chart.
 
-## Reviewer quick start
+The main model achieves **$116.19 MAE** on the reserved September-October
+evaluation, a **49.3% reduction** from the equipment rate-per-mile baseline.
+These are internal results; final-set labels and Spotter's hidden evaluation
+metric are unavailable.
 
-Install 64-bit Python 3.12, clone this repository, and open a terminal in its root.
-Create and activate a virtual environment using [SETUP.md](SETUP.md), then run:
+## Results
 
-```text
+Models below were fitted on **38,477 January-August loads** and evaluated on
+**9,523 September-October loads**. Model roles and parameters were fixed before
+that window was scored.
+
+| Model role | MAE ($) | RMSE ($) | R-squared |
+| --- | ---: | ---: | ---: |
+| Equipment rate-per-mile baseline | 229.10 | 670.66 | 0.8069 |
+| Main model: full-feature CatBoost | 116.19 | 636.24 | 0.8262 |
+| December path: reduced-input CatBoost | 113.09 | 635.14 | 0.8268 |
+
+Final prediction files use the same frozen configurations refitted on all
+**48,000 labeled loads**. The table describes the earlier evaluation fits, not
+accuracy measured on the unlabeled final set. See the
+[evaluation report](reports/final_check/final_check.md) and
+[model-selection rationale](MODEL_DECISIONS.md).
+
+## Quick start
+
+Requires **64-bit Python 3.12** and a CPU. No GPU, API key, external data service,
+or pretrained model download is needed.
+
+```bash
+git clone https://github.com/AffanRM/spotter_ml.git
+cd spotter_ml
+```
+
+Create and activate an environment. On Windows PowerShell:
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+On macOS/Linux:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+```
+
+In Git Bash on Windows, activate with `source .venv/Scripts/activate`.
+Then run:
+
+```bash
 python -m pip install -r requirements-lock.txt
 python -m unittest discover -s tests -v
 python -m freight.submission
 python -m freight.audit --require-saved-models
 ```
 
-This generates both prediction CSVs and the supplied scorer's December chart.
-No private account, GPU, external data service, or pretrained artifact is needed.
-The committed outputs can also be checked immediately with the supplied scorer:
+The submission command fits both selected models, verifies saved-model reloads,
+generates prediction files, and runs the supplied scorer. Training takes a few
+minutes on a laptop. Native models are saved locally under ignored
+`artifacts/models/`; a fresh clone regenerates them from the supplied data.
 
-```text
-python score.py --predictions validation_predictions.csv --december-predictions december_predictions.csv
+To regenerate outputs from matching saved models without retraining:
+
+```bash
+python -m freight.submission --predict-only
 ```
 
-## Implementation progress
+See [SETUP.md](SETUP.md) for activation troubleshooting and environment provenance.
 
-The supplied data files are in this directory; commands below use their actual
-filenames. See [the assessment brief](freight-rate-ml-assessment-1-.pdf).
+## Prediction artifacts
 
-- Environment and dependency setup: [SETUP.md](SETUP.md)
-- Requirements and implementation sequence: [TASK_OVERVIEW.md](TASK_OVERVIEW.md)
-- Generated data-quality analysis: [reports/eda/exploration.md](reports/eda/exploration.md)
-- Development model comparison: [reports/benchmark/benchmark.md](reports/benchmark/benchmark.md)
-- Geographic stress tests and residuals: [reports/robustness/robustness.md](reports/robustness/robustness.md)
-- Frozen model decisions: [MODEL_DECISIONS.md](MODEL_DECISIONS.md)
-- Reserved-window evaluation: [reports/final_check/final_check.md](reports/final_check/final_check.md)
-- Submission generation audit: [reports/submission/submission.md](reports/submission/submission.md)
-- Full project review: [PROJECT_REVIEW.md](PROJECT_REVIEW.md)
-- Manual Git checkpoints: [GIT_WORKFLOW.md](GIT_WORKFLOW.md)
+| Artifact | Description |
+| --- | --- |
+| [validation_predictions.csv](validation_predictions.csv) | Exactly 12,000 unique IDs in template order; `load_id,predicted_rate` columns |
+| [december_predictions.csv](december_predictions.csv) | All 31 fixed December scenarios with original input values preserved |
+| [candidate_december.png](scorer_results/candidate_december.png) | Chart generated by the unchanged supplied scorer |
+| [Submission audit](reports/submission/submission.md) | Generation method, saved-model verification and artifact provenance |
 
-From the project folder, run:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-python -m freight.explore
-python -m unittest discover -s tests -v
-python -m freight.benchmark
-python -m freight.robustness
-python -m freight.final_check
-python -m freight.submission
-```
-
-Activation is optional: replace `python` with `.\.venv\Scripts\python.exe`.
-The analysis command writes reports to `reports/eda/` without changing the input
-CSVs. The benchmark compares eight candidates on two temporal development folds,
-writes `reports/benchmark/`, and leaves September-October unscored. It normally
-takes a few minutes on a laptop. Large row-level diagnostics go in ignored
-`artifacts/benchmark/`. The robustness command retrains five candidates after
-removing eight cities from training, scores seen/unseen locations separately,
-and audits the original temporal prediction errors. It writes
-`reports/robustness/` and requires the benchmark's local row-level diagnostics;
-run the benchmark first on a fresh clone. The selected main/chart models and
-parameters are recorded in `model_policy.json`; `freight.final_check` evaluates
-those frozen choices on September-October. It reports the predeclared baseline
-and both inference paths without selecting a new model from that window.
-The submission command refits both frozen models on all 48,000 labeled rows,
-checks native-model reload predictions, fills both output CSVs, and invokes the
-unchanged scorer. Saved models are generated locally in ignored
-`artifacts/models/`. Use `python -m freight.submission --predict-only` to reuse
-matching saved models without retraining.
-
-Generated deliverables:
-
-- [12,000 final load predictions](validation_predictions.csv)
-- [31 fixed December predictions](december_predictions.csv)
-- [Scorer-generated December chart](scorer_results/candidate_december.png)
-
-Both prediction files passed the supplied scorer. The formal report and Loom
-recording are the remaining submission deliverables.
-
-In Git Bash/MSYS2, activate with `source .venv/Scripts/activate` instead. The
-subsequent `python` commands are the same in either shell.
-
-## What to do
-
-1. Train and validate your model using `train-test.csv`.
-2. Predict every load in `validation.csv`. Each load has a unique `load_id`.
-3. Fill the matching `predicted_rate` values in `validation-predictions-template.csv` and save it as `validation_predictions.csv`.
-4. Predict every row in `december-chart-inputs.csv` by filling its `predicted_rate` column. Save a completed copy as `december_predictions.csv`.
-5. After these prediction files have been generated, run:
+All output rates are finite and positive. To validate the committed CSVs and
+regenerate the chart independently of fitting:
 
 ```bash
 python score.py --predictions validation_predictions.csv --december-predictions december_predictions.csv
 ```
 
-The scorer validates both files and creates `scorer_results/candidate_december.png`.
+The scorer validates contracts and draws the chart; it does not measure accuracy.
 
-## Submit
+## Data and validation
 
-- GitHub repository containing your code, dependencies, and run instructions
-- `validation_predictions.csv`
-- PDF or DOCX report containing your validation, data split approach and `candidate_december.png`
-- 2-3 minute Loom link
+Original inputs remain in the repository root and are not overwritten.
+
+| Input | Contents |
+| --- | --- |
+| `train-test.csv` | 48,000 labeled loads, January-October 2025; target: `posted_rate` |
+| `validation.csv` | 12,000 unlabeled loads, November-December 2025 |
+| `validation-predictions-template.csv` | Required final IDs and output schema |
+| `december-chart-inputs.csv` | Lexington to Fort Wayne, 360 miles, Dry Van, 32,000 lb; only date changes |
+
+Validation follows the future-prediction setting:
+
+| Purpose | Training period | Evaluation period |
+| --- | --- | --- |
+| Development backtest 1 | January-April | May-June |
+| Development backtest 2 | January-June | July-August |
+| Reserved performance check | January-August | September-October |
+| Final refit | January-October | November-December final inputs, without labels |
+
+Eight candidates were compared on development backtests: median, equipment
+rate-per-mile, Ridge, and CatBoost variants. The full-feature MAE model had the
+best pooled development MAE. Geographic stress testing removed eight
+target-independently selected cities from training in both route roles.
+
+The main model uses categorical inputs, supplied coordinates, distance, cleaned
+weight and quality flags, calendar features, market index and quote signal.
+The chart model excludes all six inputs unavailable in the December scenarios.
+No future signals are fabricated.
+
+IDs and labels are excluded from model features. Nonpositive weights are treated
+as unknown and flagged. Fitted preprocessing uses training rows only. Extreme
+labels remain in headline metrics; model roles were not changed after observing
+the reserved results.
+
+## Analysis and implementation
+
+```bash
+python -m freight.explore
+python -m freight.benchmark
+python -m freight.robustness
+```
+
+These commands regenerate exploration, temporal comparisons, and geographic/
+residual diagnostics. Run the benchmark before robustness on a fresh clone:
+robustness uses locally generated, ignored out-of-time predictions.
+The frozen evaluation can be reproduced separately; see [SETUP.md](SETUP.md)
+for preserving the original evidence when the execution environment differs.
+
+| Location | Responsibility |
+| --- | --- |
+| `freight/data.py`, `freight/features.py` | Input contracts, cleaning and deterministic features |
+| `freight/splits.py`, `freight/benchmark.py`, `freight/robustness.py` | Temporal validation, model comparison and city/error diagnostics |
+| `freight/models.py`, `freight/policy.py` | Estimators and frozen model configuration |
+| `freight/final_check.py` | Reserved evaluation and experiment provenance |
+| `freight/submission.py`, `freight/audit.py` | Full-data refits, persistence, generation and integrity checks |
+| `tests/` | Regression tests for input contracts, leakage boundaries, persistence and ID alignment |
+| `reports/` | Findings, metrics, manifests and verification evidence |
+
+Detailed analyses: [data quality](reports/eda/exploration.md),
+[candidate comparisons](reports/benchmark/benchmark.md),
+[geographic robustness](reports/robustness/robustness.md), and
+[project review](PROJECT_REVIEW.md).
+
+## Quality checks and limitations
+
+The [Project checks workflow](.github/workflows/checks.yml) runs dependency
+installation, unit tests, deliverable auditing, and the supplied scorer on
+Windows and Linux. The first hosted run
+[passed on commit 7d43baa](https://github.com/AffanRM/spotter_ml/actions/runs/41107921602).
+A separate clean Windows environment reproduced both CSVs and the chart byte
+for byte; see [reproduction evidence](reports/audit/clean_reproduction.json).
+
+Quote-signal relationships change across months, the city stress test uses one
+fixed subset, and extreme errors dominate RMSE. A partial single year cannot
+establish annual or holiday effects. The December curve is a conditional model
+prediction rather than a calibrated time-series forecast. Dataset-level
+exploration included all labeled months; the reserved performance check is not
+an externally sequestered blind test.
+
+The [assessment brief](freight-rate-ml-assessment-1-.pdf) and candidate delivery
+checklist are documented separately in [TASK_OVERVIEW.md](TASK_OVERVIEW.md).
