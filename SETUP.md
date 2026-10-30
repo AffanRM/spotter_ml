@@ -53,12 +53,20 @@ After activation, either shell supports:
 python -m freight.explore
 python -m unittest discover -s tests -v
 python -m freight.benchmark
+python -m freight.robustness
 ```
 
 The benchmark defaults to 500 CatBoost iterations and four CPU threads. Override
 with `python -m freight.benchmark --iterations 500 --threads 4` if desired.
 Changing the iteration count produces a new experiment, so retain that setting
 when comparing results. It does not evaluate the reserved final-check window.
+
+The robustness command also uses 500 iterations and four threads by default.
+It needs `artifacts/benchmark/development_predictions.csv`, which is generated
+locally by the benchmark and excluded from Git. It verifies source IDs, labels,
+hashes, and scores before analyzing residuals. If you change benchmark iterations,
+use the same `--iterations` argument for robustness. Both commands leave the
+reserved September-October performance check unscored.
 
 ## Recreate on another computer
 

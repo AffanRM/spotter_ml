@@ -9,6 +9,7 @@ filenames. See [the assessment brief](freight-rate-ml-assessment-1-.pdf).
 - Requirements and implementation sequence: [TASK_OVERVIEW.md](TASK_OVERVIEW.md)
 - Generated data-quality analysis: [reports/eda/exploration.md](reports/eda/exploration.md)
 - Development model comparison: [reports/benchmark/benchmark.md](reports/benchmark/benchmark.md)
+- Geographic stress tests and residuals: [reports/robustness/robustness.md](reports/robustness/robustness.md)
 - Manual Git checkpoints: [GIT_WORKFLOW.md](GIT_WORKFLOW.md)
 
 From the project folder, run:
@@ -18,6 +19,7 @@ From the project folder, run:
 python -m freight.explore
 python -m unittest discover -s tests -v
 python -m freight.benchmark
+python -m freight.robustness
 ```
 
 Activation is optional: replace `python` with `.\.venv\Scripts\python.exe`.
@@ -25,8 +27,12 @@ The analysis command writes reports to `reports/eda/` without changing the input
 CSVs. The benchmark compares eight candidates on two temporal development folds,
 writes `reports/benchmark/`, and leaves September-October unscored. It normally
 takes a few minutes on a laptop. Large row-level diagnostics go in ignored
-`artifacts/benchmark/`. Location holdouts and final model decisions come next;
-submission predictions have not been generated.
+`artifacts/benchmark/`. The robustness command retrains five candidates after
+removing eight cities from training, scores seen/unseen locations separately,
+and audits the original temporal prediction errors. It writes
+`reports/robustness/` and requires the benchmark's local row-level diagnostics;
+run the benchmark first on a fresh clone. Final model decisions and the reserved
+performance check come next; submission predictions have not been generated.
 
 In Git Bash/MSYS2, activate with `source .venv/Scripts/activate` instead. The
 subsequent `python` commands are the same in either shell.

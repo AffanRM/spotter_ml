@@ -1,0 +1,26 @@
+fold,model,load_id,actual_rate,predicted_rate,distance,pickup,delivery,equipment,weight,date,market_index,quote_signal,actual_rate_per_mile,absolute_error,rpm_band
+development_1,catboost_full_mae,TR-026236,23580.42,4617.080220238755,2552.5,Charleston,Phoenix,Dry Van,25665.0,2025-06-15,1.20224,1.81289,9.238166503428012,18963.33977976124,above_training_99th_percentile
+development_2,catboost_full_mae,TR-037765,24294.98,5364.202555738118,2810.9,Phoenix,Syracuse,Dry Van,33674.0,2025-08-27,1.04877,2.16284,8.643132092923974,18930.777444261883,above_training_99th_percentile
+development_1,catboost_full_mae,TR-028220,22755.66,4756.090891633689,2423.3,Tucson,Raleigh,Dry Van,30972.0,2025-06-27,1.32894,1.97112,9.390360252548177,17999.56910836631,above_training_99th_percentile
+development_2,catboost_full_mae,TR-031260,19042.39,3837.8877851213074,1747.7,Oklahoma City,Baltimore,Reefer,28876.0,2025-07-16,1.34103,1.80406,10.895685758425358,15204.502214878692,above_training_99th_percentile
+development_2,catboost_full_mae,TR-034584,18972.15,4405.1668766854655,2242.0,Atlanta,Fresno,Dry Van,32005.0,2025-08-06,1.09714,1.98678,8.462154326494202,14566.983123314536,above_training_99th_percentile
+development_2,catboost_full_mae,TR-033075,17333.65,4050.001905739775,1880.0,Mobile,Phoenix,Reefer,21494.0,2025-07-27,0.97385,2.04041,9.220026595744681,13283.648094260227,above_training_99th_percentile
+development_1,catboost_full_mae,TR-020246,17772.53,4618.564008641355,2153.5,Atlanta,Los Angeles,Reefer,31758.0,2025-05-08,1.42571,1.96054,8.252858137915021,13153.965991358644,above_training_99th_percentile
+development_2,catboost_full_mae,TR-035469,17742.34,4650.99937649626,2305.9,Lexington,Fresno,Dry Van,42707.0,2025-08-12,0.9485,2.28957,7.69432325773017,13091.34062350374,above_training_99th_percentile
+development_2,catboost_full_mae,TR-032353,16951.43,4104.282529993673,1998.0,Phoenix,Nashville,Dry Van,41695.0,2025-07-23,1.27214,2.13503,8.4841991991992,12847.147470006326,above_training_99th_percentile
+development_1,catboost_full_mae,TR-019517,16229.57,4202.750370148897,2021.0,Los Angeles,Nashville,Flatbed,33799.0,2025-05-03,1.28844,2.07878,8.03046511627907,12026.819629851103,above_training_99th_percentile
+development_1,catboost_full_mae,TR-027388,14628.56,3522.2911884104524,1823.4,St. Louis,Reno,Dry Van,27053.0,2025-06-21,1.22629,1.85045,8.022682900076779,11106.268811589547,above_training_99th_percentile
+development_1,catboost_full_mae,TR-021610,14079.19,3015.061732866692,1421.3,Albuquerque,Milwaukee,Flatbed,27841.0,2025-05-17,1.23694,2.04142,9.905853795820729,11064.128267133308,above_training_99th_percentile
+development_1,catboost_full_mae,TR-020883,14561.21,3661.292269808584,1869.7,Reno,Memphis,Flatbed,-19389.0,2025-05-12,1.26327,2.24126,7.7879927261057915,10899.917730191415,above_training_99th_percentile
+development_2,catboost_full_mae,TR-028825,14317.13,3435.288323647937,1627.6,Washington,Lubbock,Dry Van,38611.0,2025-07-01,1.25439,2.08207,8.796467190956008,10881.841676352062,above_training_99th_percentile
+development_2,catboost_full_mae,TR-036930,14362.88,3647.406275388158,1894.0,Kansas City,Phoenix,Dry Van,21740.0,2025-08-21,1.08017,2.12559,7.583357972544878,10715.473724611842,above_training_99th_percentile
+development_1,catboost_full_mae,TR-027615,13875.07,3193.967128113068,1615.7,El Paso,Cincinnati,Flatbed,25698.0,2025-06-23,1.1551,2.24607,8.587652410719812,10681.102871886931,above_training_99th_percentile
+development_2,catboost_full_mae,TR-029286,13817.43,3422.992629270489,1517.5,Baton Rouge,Philadelphia,Reefer,36203.0,2025-07-04,1.35508,1.83016,9.105390444810544,10394.43737072951,above_training_99th_percentile
+development_1,catboost_full_mae,TR-028700,15165.13,4837.771406896214,2396.0,Bakersfield,Buffalo,Dry Van,36757.0,2025-06-30,1.20963,2.00026,6.329353088480801,10327.358593103785,above_training_99th_percentile
+development_2,catboost_full_mae,TR-032678,13435.73,3233.3816400157107,1547.6,Dallas,Baltimore,Dry Van,34852.0,2025-07-25,1.06736,2.23071,8.681655466528818,10202.34835998429,above_training_99th_percentile
+development_1,catboost_full_mae,TR-021951,13863.47,3977.255103802388,1851.3,Hartford,Oklahoma City,Reefer,29871.0,2025-05-19,1.20795,1.97389,7.4885053746016315,9886.21489619761,above_training_99th_percentile
+development_1,catboost_full_mae,TR-021084,12569.71,2980.4652644602843,1559.8,Las Vegas,Baton Rouge,Dry Van,22992.0,2025-05-13,1.28711,2.18265,8.058539556353379,9589.244735539714,above_training_99th_percentile
+development_1,catboost_full_mae,TR-024566,12403.35,2914.8580503795124,1264.3,Hartford,Mobile,Reefer,36014.0,2025-06-04,1.3777,2.33399,9.81044846950882,9488.491949620488,above_training_99th_percentile
+development_2,catboost_full_mae,TR-032460,12550.02,3065.8202292739866,1424.2,Charleston,Lubbock,Dry Van,43646.0,2025-07-24,1.31612,1.93952,8.811978654683331,9484.199770726014,above_training_99th_percentile
+development_1,catboost_full_mae,TR-022731,11895.25,2538.4028914115343,1041.3,Dallas,Grand Rapids,Reefer,32899.0,2025-05-24,1.24348,1.79121,11.423461058292519,9356.847108588467,above_training_99th_percentile
+development_1,catboost_full_mae,TR-020882,12906.22,3591.075004054972,2004.1,Reno,Dayton,Dry Van,17891.0,2025-05-12,1.22414,2.32767,6.439908188214161,9315.144995945027,above_training_99th_percentile

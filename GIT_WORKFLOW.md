@@ -3,7 +3,8 @@
 Commits and pushes are performed by the candidate. These commands assume
 PowerShell or Git Bash/MSYS2 is open in the project folder. The first two
 checkpoints were committed and pushed to `https://github.com/AffanRM/spotter_ml.git`.
-Start with checkpoint 3 for the new changes. Earlier instructions are retained
+Checkpoint 3 was also committed and pushed as `af62a46`. Start with checkpoint 4
+for the new changes. Earlier instructions are retained
 for reference.
 
 ## First-time initialization
@@ -76,3 +77,27 @@ This checkpoint keeps large generated prediction diagnostics in ignored
 are committed. Fixed seeds and parameters make metrics reproducible with the
 locked environment; recorded runtimes vary by machine. September-October remains
 reserved for the later final check. No dependency additions are needed.
+
+## Checkpoint 4: unseen-city stress tests and error analysis
+
+With the virtual environment active:
+
+```text
+python -m unittest discover -s tests -v
+python -m freight.robustness
+git status
+git add freight/splits.py freight/robustness.py tests/test_robustness.py reports/robustness
+git add readme.md SETUP.md TASK_OVERVIEW.md GIT_WORKFLOW.md
+git diff --cached --stat
+git diff --cached --check
+git commit -m "feat: add unseen-city stress tests and residual diagnostics"
+git push
+git status
+```
+
+If running from a fresh clone, first run `python -m freight.benchmark` to
+regenerate the ignored row-level predictions required by robustness. When those
+predictions already exist, there is no need to rerun the benchmark for this
+checkpoint. The tests now include city isolation in both route directions,
+target-independent city selection, and rejection of invalid development
+prediction provenance. The September-October final check is still unscored.

@@ -1,0 +1,90 @@
+{
+  "input_sha256": "892980fd20bac7ac0ca4ec31d3981fca48d52dec88e4f02642ab955f1efb40fe",
+  "source_prediction_sha256": "f1a08684f5dd03a4fffe5761ccd7be61a45bd19191faa2fe243026d5c08af8b2",
+  "source_benchmark_manifest_sha256": "e20db7a3a438b2039116c32f07ec2e2ba3a9c8bb1cc72bdc2835e910fb7ec2ee",
+  "heldout_cities": [
+    "Boston",
+    "Philadelphia",
+    "Dallas",
+    "Fresno",
+    "Buffalo",
+    "Corpus Christi",
+    "El Paso",
+    "Hartford"
+  ],
+  "city_selection": "eight smallest SHA256(42:city) values among cities in Jan-Apr training; target-independent",
+  "fold_counts": [
+    {
+      "fold": "development_1",
+      "original_train_rows": 19110,
+      "purged_train_rows": 14571,
+      "validation_rows": 9696,
+      "unseen_city_rows": 2200
+    },
+    {
+      "fold": "development_2",
+      "original_train_rows": 28806,
+      "purged_train_rows": 22067,
+      "validation_rows": 9671,
+      "unseen_city_rows": 2203
+    }
+  ],
+  "models": {
+    "equipment_rate_per_mile": {
+      "name": "equipment_rate_per_mile",
+      "kind": "equipment_rpm",
+      "feature_set": "core",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    },
+    "catboost_core_mae": {
+      "name": "catboost_core_mae",
+      "kind": "catboost",
+      "feature_set": "core",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    },
+    "catboost_market_mae": {
+      "name": "catboost_market_mae",
+      "kind": "catboost",
+      "feature_set": "market",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    },
+    "catboost_full_mae": {
+      "name": "catboost_full_mae",
+      "kind": "catboost",
+      "feature_set": "full",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    },
+    "catboost_chart_mae": {
+      "name": "catboost_chart_mae",
+      "kind": "catboost",
+      "feature_set": "chart",
+      "loss": "MAE",
+      "iterations": 500,
+      "seed": 42,
+      "threads": 4
+    }
+  },
+  "diagnostic_training_rpm_thresholds": {
+    "development_1": {
+      "training_rpm_p01": 1.6398983748934786,
+      "training_rpm_p99": 3.0648677642501383
+    },
+    "development_2": {
+      "training_rpm_p01": 1.6582864364869165,
+      "training_rpm_p99": 3.150991058545261
+    }
+  },
+  "final_check_evaluated": false
+}
