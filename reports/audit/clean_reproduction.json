@@ -1,0 +1,26 @@
+{
+  "method": "Tracked-source snapshot plus audit fixes; no pre-existing model artifacts; new isolated venv installed from the lock file",
+  "baseline_commit": "14207a8e632c9fe1958c37b2fd30925f078f2a04",
+  "locked_requirements_sha256": "ed1365becd87d6724ee306a0e4b4fac19ddfc47220407076afa77bbb469cd31e",
+  "fresh_tests_passed": 26,
+  "fresh_full_refit_passed": true,
+  "fresh_predict_only_passed": true,
+  "fresh_scorer_passed": true,
+  "same_platform": "Windows x64, CPython 3.12.14",
+  "linux_hosted_ci": "Configured, not executed locally",
+  "outputs": {
+    "validation_predictions.csv": {
+      "sha256": "2fe3668276c7d52fe533e2f4864c947a757f4464764e6518036f998d23c68ce8",
+      "matches_committed_baseline_and_clean_refit": true
+    },
+    "december_predictions.csv": {
+      "sha256": "2da86d310c43498142d709ab9800fc9babb0523151709ec216a32be941447673",
+      "matches_committed_baseline_and_clean_refit": true
+    },
+    "scorer_results/candidate_december.png": {
+      "sha256": "736358a1a4d8741cd3a3e77b7e6ec42f1837ca99a6654b59c6fa4984a8cb869c",
+      "matches_committed_baseline_and_clean_refit": true
+    }
+  },
+  "seven_original_input_scorer_dependency_files_unchanged": true
+}

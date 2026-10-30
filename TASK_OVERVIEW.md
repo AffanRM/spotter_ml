@@ -73,5 +73,7 @@ comparison runs with `python -m freight.benchmark`; geographic stress and error
 analysis run with `python -m freight.robustness`. Frozen choices are documented
 in `MODEL_DECISIONS.md` and evaluated by `python -m freight.final_check`.
 Full-data refitting and prediction generation run with `python -m freight.submission`.
-The formal report and Loom preparation are next. Commit/push operations are performed
+The full project audit and reviewer-reproducibility fixes are documented in
+`PROJECT_REVIEW.md`; run `python -m freight.audit --require-saved-models` after
+generation. The formal report and Loom preparation are next. Commit/push operations are performed
 by the candidate; commands for completed checkpoints are in `GIT_WORKFLOW.md`.

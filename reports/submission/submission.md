@@ -35,7 +35,7 @@ To regenerate predictions using existing matching models without retraining:
 python -m freight.submission --predict-only
 ```
 
-The command checks the frozen final-check identity and model-file checksums,
+The command checks the evaluated input/code/policy and model-file checksums,
 joins predictions by ID, and runs the supplied scorer CLI. Refit model binaries
 may have different internal metadata/hashes; prediction values are the
 reproducibility target. Preserve the model bundle manifest with its own models.

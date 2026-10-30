@@ -1,0 +1,60 @@
+{
+  "technical_checks_passed": true,
+  "checks": [
+    {
+      "check": "Final prediction contract",
+      "status": "pass",
+      "detail": "12,000 unique IDs; exact two-column schema; finite positive rates; template order"
+    },
+    {
+      "check": "December prediction contract",
+      "status": "pass",
+      "detail": "31 dates; fixed route and inputs preserved; positive finite predictions"
+    },
+    {
+      "check": "Original input and scorer integrity",
+      "status": "pass",
+      "detail": "Four original CSV hashes and supplied scorer match recorded provenance"
+    },
+    {
+      "check": "Published output integrity",
+      "status": "pass",
+      "detail": "Both CSVs, chart, and generation implementation match their audit"
+    },
+    {
+      "check": "Frozen evaluation and refit provenance",
+      "status": "pass",
+      "detail": "Frozen data/code/policy preserved; full-data refit covers all 48,000 labeled rows"
+    },
+    {
+      "check": "Temporal and ID separation",
+      "status": "pass",
+      "detail": "Development, reserved evaluation, and final inference boundaries checked"
+    },
+    {
+      "check": "Reserved metric arithmetic",
+      "status": "pass",
+      "detail": "All three reserved-window metric rows independently recomputed from 9,523 labeled predictions each"
+    },
+    {
+      "check": "Development metric arithmetic",
+      "status": "pass",
+      "detail": "All eight development leader-board rows recomputed; labels, folds, and prediction IDs checked"
+    },
+    {
+      "check": "City stress metric arithmetic",
+      "status": "pass",
+      "detail": "All ten pooled seen/unseen city metrics independently recomputed with source labels"
+    },
+    {
+      "check": "Documentation links",
+      "status": "pass",
+      "detail": "Relative file links checked in 11 Markdown documents"
+    },
+    {
+      "check": "Saved models and prediction agreement",
+      "status": "pass",
+      "detail": "Checked model hashes, full training count, reload evidence, and every written prediction"
+    }
+  ]
+}

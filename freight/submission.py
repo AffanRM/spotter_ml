@@ -28,6 +28,21 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def verify_evaluation_provenance(identity: dict, evaluated: dict) -> bool:
+    """Keep evaluated data/code/policy fixed; record environment differences.
+
+    Reproduction on another Python patch release must not require overwriting
+    the original holdout report. Its metrics still describe its own environment.
+    Saved model bundles remain tied to the environment in which they were fit.
+    """
+    if not evaluated.get("final_check_evaluated"):
+        raise ValueError("The frozen policy has not been evaluated")
+    for key in ["input_sha256", "policy_sha256", "implementation_sha256"]:
+        if identity.get(key) != evaluated.get(key):
+            raise ValueError(f"Input, policy, or evaluated implementation changed: {key}")
+    return all(identity.get(key) == evaluated.get(key) for key in ["python_version", "packages"])
+
+
 def validation_predictions(model, loads: pd.DataFrame, template: pd.DataFrame) -> pd.DataFrame:
     """Fill by ID, preserving template order rather than assuming row alignment."""
     if list(template.columns) != ["load_id", "predicted_rate"]:
@@ -111,8 +126,9 @@ def run(data_dir: Path, policy_path: Path, model_dir: Path, output_dir: Path, pr
     policy = load_policy(policy_path)
     identity = experiment_identity(data_dir / "train-test.csv", policy_path)
     final_manifest = json.loads((ROOT / "reports" / "final_check" / "manifest.json").read_text(encoding="utf-8"))
-    if not final_manifest.get("final_check_evaluated") or final_manifest["experiment_id"] != identity["experiment_id"]:
-        raise ValueError("Inputs, policy, code, or environment differ from the recorded final check")
+    same_environment = verify_evaluation_provenance(identity, final_manifest)
+    if not same_environment:
+        print("Reproducing the frozen configuration in a different environment; original evaluation evidence is preserved.", flush=True)
     input_hashes = {name: sha256(data_dir / name) for name in INPUT_FILES}
     train = read_loads(data_dir / "train-test.csv", labeled=True)
     loads = read_loads(data_dir / "validation.csv", labeled=False)
@@ -125,6 +141,7 @@ def run(data_dir: Path, policy_path: Path, model_dir: Path, output_dir: Path, pr
     if predict_only:
         print("Loading saved full-data models; no retraining.", flush=True)
         models, bundle = load_bundle(model_dir, policy, identity)
+        reload_verified = bool(bundle.get("reload_verified_on_all_submission_rows", False))
     else:
         models = {}
         for role in ["main", "chart"]:
@@ -135,6 +152,9 @@ def run(data_dir: Path, policy_path: Path, model_dir: Path, output_dir: Path, pr
         for role, sample in [("main", loads), ("chart", december.drop(columns="predicted_rate"))]:
             np.testing.assert_allclose(models[role].predict(sample), reloaded[role].predict(sample), rtol=0, atol=1e-10)
         models = reloaded
+        bundle["reload_verified_on_all_submission_rows"] = True
+        (model_dir / "manifest.json").write_text(json.dumps(bundle, indent=2) + "\n", encoding="utf-8", newline="\n")
+        reload_verified = True
         print("Saved-model reload predictions verified for every final and December row.", flush=True)
     if bundle["train_rows"] != len(train) or bundle["training_input_sha256"] != input_hashes["train-test.csv"]:
         raise ValueError("Saved models were not fitted on the expected full training data")
@@ -160,14 +180,17 @@ def run(data_dir: Path, policy_path: Path, model_dir: Path, output_dir: Path, pr
     report_dir = output_dir / "reports" / "submission"
     report_dir.mkdir(parents=True, exist_ok=True)
     report = {
-        "frozen_experiment_id": identity["experiment_id"], "policy": policy,
+        "frozen_experiment_id": final_manifest["experiment_id"], "policy": policy,
+        "generation_experiment_id": identity["experiment_id"],
+        "generation_environment_matches_evaluation": same_environment,
+        "generation_environment": {"python_version": identity["python_version"], "packages": identity["packages"]},
         "generation_implementation_sha256": sha256(Path(__file__)),
         "input_sha256": input_hashes, "scorer_sha256": sha256(ROOT / "score.py"),
         "training_rows": len(train), "training_date_min": str(train.date.min().date()),
         "training_date_max": str(train.date.max().date()), "final_rows": len(final), "december_rows": len(chart),
         "all_predictions_finite_positive": True, "template_order_preserved": True,
         "raw_inputs_unchanged": True, "provided_scorer_passed": True,
-        "saved_model_reload_verified": True,
+        "saved_model_reload_verified": reload_verified,
         "output_sha256": {"validation_predictions.csv": sha256(final_path), "december_predictions.csv": sha256(december_path), "scorer_results/candidate_december.png": sha256(chart_path)},
         "models": bundle["models"],
         "final_rate_summary": final.predicted_rate.describe().to_dict(),
@@ -213,7 +236,7 @@ To regenerate predictions using existing matching models without retraining:
 python -m freight.submission --predict-only
 ```
 
-The command checks the frozen final-check identity and model-file checksums,
+The command checks the evaluated input/code/policy and model-file checksums,
 joins predictions by ID, and runs the supplied scorer CLI. Refit model binaries
 may have different internal metadata/hashes; prediction values are the
 reproducibility target. Preserve the model bundle manifest with its own models.

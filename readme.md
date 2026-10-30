@@ -1,5 +1,31 @@
 # Freight Rate Prediction Challenge
 
+Predict freight load rates with chronological validation and reproducible
+CatBoost pipelines. The reserved September-October evaluation achieved
+**$116.19 MAE / $636.24 RMSE** for the main model, versus **$229.10 MAE** for
+the equipment baseline. These are internal evaluation scores, not hidden
+submission scores. The final refits use all 48,000 labeled rows.
+
+## Reviewer quick start
+
+Install 64-bit Python 3.12, clone this repository, and open a terminal in its root.
+Create and activate a virtual environment using [SETUP.md](SETUP.md), then run:
+
+```text
+python -m pip install -r requirements-lock.txt
+python -m unittest discover -s tests -v
+python -m freight.submission
+python -m freight.audit --require-saved-models
+```
+
+This generates both prediction CSVs and the supplied scorer's December chart.
+No private account, GPU, external data service, or pretrained artifact is needed.
+The committed outputs can also be checked immediately with the supplied scorer:
+
+```text
+python score.py --predictions validation_predictions.csv --december-predictions december_predictions.csv
+```
+
 ## Implementation progress
 
 The supplied data files are in this directory; commands below use their actual
@@ -13,6 +39,7 @@ filenames. See [the assessment brief](freight-rate-ml-assessment-1-.pdf).
 - Frozen model decisions: [MODEL_DECISIONS.md](MODEL_DECISIONS.md)
 - Reserved-window evaluation: [reports/final_check/final_check.md](reports/final_check/final_check.md)
 - Submission generation audit: [reports/submission/submission.md](reports/submission/submission.md)
+- Full project review: [PROJECT_REVIEW.md](PROJECT_REVIEW.md)
 - Manual Git checkpoints: [GIT_WORKFLOW.md](GIT_WORKFLOW.md)
 
 From the project folder, run:

@@ -4,7 +4,8 @@ Commits and pushes are performed by the candidate. These commands assume
 PowerShell or Git Bash/MSYS2 is open in the project folder. The first two
 checkpoints were committed and pushed to `https://github.com/AffanRM/spotter_ml.git`.
 Checkpoint 3 was committed and pushed as `af62a46`, and checkpoint 4 as `cabec32`.
-Checkpoint 5 was committed and pushed as `b70e837`. Start with checkpoint 6
+Checkpoint 5 was committed and pushed as `b70e837`, and checkpoint 6 as `14207a8`.
+Start with checkpoint 7
 for the new changes. Earlier instructions are retained
 for reference.
 
@@ -150,3 +151,26 @@ labeled rows. The second reuses saved models and should reproduce the same CSVs
 and chart. Neither command changes the raw inputs or the supplied scorer.
 Models and large diagnostics remain excluded from Git under `artifacts/`.
 The formal report and Loom recording remain to be prepared.
+
+## Checkpoint 7: full audit and reviewer reproducibility
+
+```text
+python -m unittest discover -s tests -v
+python -m freight.submission
+python -m freight.audit --require-saved-models
+git status
+git add .github/workflows/checks.yml freight/audit.py freight/submission.py tests/test_submission.py
+git add PROJECT_REVIEW.md readme.md SETUP.md TASK_OVERVIEW.md GIT_WORKFLOW.md
+git add reports/audit reports/submission
+git diff --cached --stat
+git diff --cached --check
+git commit -m "fix: improve reviewer portability and audit submission integrity"
+git push
+git status
+```
+
+After pushing, inspect the new Project checks workflow in GitHub's Actions tab.
+Its Windows/Linux hosted results are pending until that run completes. The audit
+preserves all frozen model choices and submission prediction values; regenerated
+model metadata and audit manifests can change. The clean-environment evidence
+records the audit session's reproduction of commit `14207a8` outputs.

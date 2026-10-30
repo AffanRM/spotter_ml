@@ -89,7 +89,7 @@ independent untouched test set. Do not use the scores for another tuning round.
 
 ## Generate submission files
 
-With the frozen final-check experiment matching this environment, run:
+With the evaluated data, code, and frozen policy unchanged, run:
 
 ```text
 python -m freight.submission
@@ -108,14 +108,17 @@ python -m freight.submission --predict-only
 ```
 
 The saved bundle must match the frozen policy, input, implementation, and Python
-environment. A fresh clone must run the fitting command first because models
+environment in which that bundle was fitted. A fresh clone must run the fitting command first because models
 are intentionally excluded from Git. CSV/PNG deliverables and summary audits
 are included in Git. No extra dependencies are needed.
 
-If reproducing on another Python version/platform, the original final-check
-identity will differ. Use the locked original environment for the audited
-submission command; preserve original evidence when separately reproducing
-evaluation on another environment.
+Another Python patch version or platform can refit the same evaluated data,
+code, and policy without replacing the original evaluation report. The command
+records the generation environment and whether it matches the evaluation
+environment; original holdout scores still refer to their recorded environment.
+Use the lock file for best reproducibility. Identical values across every
+platform/library version are not guaranteed. Reusing a saved model bundle in
+another environment is rejected; regenerate it with the fitting command.
 
 ## Recreate on another computer
 
@@ -129,7 +132,7 @@ py -3.12 -m venv .venv
 `requirements.txt` is the unchanged employer-supplied scorer dependency list.
 `requirements-project.txt` includes it and adds scientific computing,
 scikit-learn baselines, CatBoost, model persistence, and PDF report tools.
-CatBoost is a candidate model to evaluate, not a model selection decision.
+CatBoost supplies the selected main and reduced-input chart models.
 `requirements-lock.txt` records the exact installed package versions.
 
 To resolve the allowed version ranges again instead of reproducing the lock:
@@ -152,5 +155,5 @@ After generating the two prediction files, run the unchanged scorer:
 
 `december_predictions.csv` should be a completed copy of
 `december-chart-inputs.csv`, retaining all seven columns and original input values.
-The scorer writes `scorer_results/candidate_december.png`. This command is for
-later: prediction files have not been generated during environment setup.
+The scorer writes `scorer_results/candidate_december.png`. This command is
+also available independently of the submission-generation command.

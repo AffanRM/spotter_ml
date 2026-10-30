@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from freight.policy import ROOT, load_policy, make_policy_model
-from freight.submission import december_predictions, load_bundle, save_bundle, validation_predictions
+from freight.submission import december_predictions, load_bundle, save_bundle, validation_predictions, verify_evaluation_provenance
 from test_data import sample_loads
 
 
@@ -19,6 +19,23 @@ class DistanceModel:
 
 
 class SubmissionTests(unittest.TestCase):
+    def test_environment_reproduction_preserves_evaluated_data_code_and_policy(self):
+        original = {
+            "input_sha256": "data", "policy_sha256": "policy",
+            "implementation_sha256": {"models.py": "code"},
+            "python_version": "3.12.14", "packages": {"catboost": "1.2.10"},
+            "final_check_evaluated": True,
+        }
+        self.assertTrue(verify_evaluation_provenance(original, original))
+        other_patch = {**original, "python_version": "3.12.15"}
+        self.assertFalse(verify_evaluation_provenance(other_patch, original))
+        for key in ["input_sha256", "policy_sha256", "implementation_sha256"]:
+            with self.subTest(key=key):
+                with self.assertRaises(ValueError):
+                    verify_evaluation_provenance({**original, key: "changed"}, original)
+        with self.assertRaises(ValueError):
+            verify_evaluation_provenance(original, {**original, "final_check_evaluated": False})
+
     def test_final_predictions_join_by_id_and_preserve_template_order(self):
         ids = [f"TE-{i:06d}" for i in range(1, 12001)]
         loads = pd.DataFrame({"load_id": ids, "distance": np.arange(1, 12001)})
