@@ -49,7 +49,7 @@
     {
       "check": "Documentation links",
       "status": "pass",
-      "detail": "Relative file links checked in 12 Markdown documents"
+      "detail": "Relative file links checked in 8 Markdown documents"
     },
     {
       "check": "Saved models and prediction agreement",

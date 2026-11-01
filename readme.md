@@ -159,11 +159,9 @@ for preserving the original evidence when the execution environment differs.
 Detailed analyses: [data quality](reports/eda/exploration.md),
 [candidate comparisons](reports/benchmark/benchmark.md),
 [geographic robustness](reports/robustness/robustness.md), and
-[project review](PROJECT_REVIEW.md).
+[integrity evidence](reports/audit/checks.json).
 
-The report is reproducible with `python -m freight.report`. A
-[timed walkthrough guide](LOOM_WALKTHROUGH.md) accompanies the implementation;
-the candidate's recorded video is supplied separately.
+The formal report is reproducible with `python -m freight.report`.
 
 ## Quality checks and limitations
 
@@ -181,5 +179,5 @@ prediction rather than a calibrated time-series forecast. Dataset-level
 exploration included all labeled months; the reserved performance check is not
 an externally sequestered blind test.
 
-The [assessment brief](freight-rate-ml-assessment-1-.pdf) and candidate delivery
-checklist are documented separately in [TASK_OVERVIEW.md](TASK_OVERVIEW.md).
+The original [assessment brief](freight-rate-ml-assessment-1-.pdf) is retained
+alongside the supplied data and scorer.

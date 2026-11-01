@@ -1,173 +1,117 @@
-# Project environment
+# Environment and reproducibility
 
-Run commands from `D:\Downloads\Coding\Spotter_ML` in PowerShell.
+Use a 64-bit Python 3.12 installation. Run commands from the repository root.
+The virtual environment and generated model binaries are excluded from Git.
 
-## Existing environment
+## Create an environment
 
-The `.venv` directory uses Python 3.12.14 from the Codex bundled runtime.
-It does not inherit the runtime's installed packages. Its base interpreter is:
-
-`C:\Users\affan\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe`
-
-The normal `python` and `python3` commands currently resolve to Windows Store
-aliases, not a working standalone Python installation. No separate installation
-is needed to use this environment. Because it depends on the Codex runtime path,
-recreate it if that runtime is moved or removed. For a standalone setup, use
-64-bit CPython 3.12 and recreate the environment with that interpreter.
-
-Use the environment directly (activation is optional):
+Windows PowerShell:
 
 ```powershell
-.\.venv\Scripts\python.exe --version
-.\.venv\Scripts\python.exe -m pip check
-```
-
-Or activate it:
-
-```powershell
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python --version
 ```
 
-If PowerShell blocks activation, use the direct interpreter commands above.
-
-If you prefer activation, PowerShell can permit local scripts for the current
-terminal process only:
+If activation is blocked, permit scripts for the current terminal process:
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\.venv\Scripts\Activate.ps1
 ```
 
-For Git Bash/MSYS2, use Unix-style paths and shell activation:
+Windows Git Bash:
 
 ```bash
-cd /d/Downloads/Coding/Spotter_ML
+py -3.12 -m venv .venv
 source .venv/Scripts/activate
-python --version
 ```
 
-After activation, either shell supports:
+macOS/Linux:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+```
+
+Install and check the pinned dependencies:
 
 ```text
-python -m freight.explore
+python -m pip install -r requirements-lock.txt
+python -m pip check
 python -m unittest discover -s tests -v
-python -m freight.benchmark
-python -m freight.robustness
-python -m freight.final_check
-python -m freight.submission
 ```
 
-The benchmark defaults to 500 CatBoost iterations and four CPU threads. Override
-with `python -m freight.benchmark --iterations 500 --threads 4` if desired.
-Changing the iteration count produces a new experiment, so retain that setting
-when comparing results. It does not evaluate the reserved final-check window.
+`requirements.txt` is the original scorer dependency list.
+`requirements-project.txt` declares the additional project dependencies, while
+`requirements-lock.txt` pins the exact installed versions used for reproduction.
 
-The robustness command also uses 500 iterations and four threads by default.
-It needs `artifacts/benchmark/development_predictions.csv`, which is generated
-locally by the benchmark and excluded from Git. It verifies source IDs, labels,
-hashes, and scores before analyzing residuals. If you change benchmark iterations,
-use the same `--iterations` argument for robustness. Both commands leave the
-reserved September-October performance check unscored.
-
-`python -m freight.final_check` evaluates the frozen `model_policy.json` on
-September-October. It can run independently of the benchmark diagnostics. A
-repeat with the same input, implementation, policy, and environment reproduces
-the same experiment. It refuses to overwrite an existing final-check report
-from a different experiment. `.gitattributes` fixes source/CSV line endings so
-Git checkout on Windows does not change input and implementation hashes.
-
-For a different Python version or platform, preserve the original evidence and
-write a separate reproduction directory:
-
-```text
-python -m freight.final_check --output-dir reports/final_check_reproduction
-```
-
-Neither a reproduction nor a new output directory makes these labels an
-independent untouched test set. Do not use the scores for another tuning round.
-
-## Generate submission files
-
-With the evaluated data, code, and frozen policy unchanged, run:
+## Generate and verify predictions
 
 ```text
 python -m freight.submission
+python -m freight.audit --require-saved-models
 ```
 
-This fits the main and chart models on all 48,000 labeled loads, saves native
-CatBoost files in ignored `artifacts/models/`, verifies reload predictions, and
-writes `validation_predictions.csv` and `december_predictions.csv`. It runs the
-supplied scorer automatically and writes `scorer_results/candidate_december.png`.
-An audit is generated in `reports/submission/`.
+This refits the frozen configurations on all 48,000 labeled loads, saves native
+CatBoost files in `artifacts/models/`, verifies reload predictions, writes both
+prediction CSVs, and invokes the unchanged supplied scorer. The command creates
+`scorer_results/candidate_december.png` and the audit in `reports/submission/`.
+A fresh clone needs no pre-existing model files.
 
-To reuse these saved models without retraining:
+To reuse a matching saved bundle without retraining:
 
 ```text
 python -m freight.submission --predict-only
 ```
 
-The saved bundle must match the frozen policy, input, implementation, and Python
-environment in which that bundle was fitted. A fresh clone must run the fitting command first because models
-are intentionally excluded from Git. CSV/PNG deliverables and summary audits
-are included in Git. No extra dependencies are needed.
+Saved bundles must match their recorded input, implementation, policy and
+Python environment. Refit rather than reusing a bundle in a changed environment.
+Another Python patch version or platform may refit the same evaluated code and
+policy; the generation environment is recorded separately from the original
+reserved evaluation. Exact values across every platform are not guaranteed.
 
-Another Python patch version or platform can refit the same evaluated data,
-code, and policy without replacing the original evaluation report. The command
-records the generation environment and whether it matches the evaluation
-environment; original holdout scores still refer to their recorded environment.
-Use the lock file for best reproducibility. Identical values across every
-platform/library version are not guaranteed. Reusing a saved model bundle in
-another environment is rejected; regenerate it with the fitting command.
+## Reproduce analysis
 
-## Generate the formal report
+```text
+python -m freight.explore
+python -m freight.benchmark
+python -m freight.robustness
+```
 
-After generating predictions and passing the audit, run:
+Run the benchmark before robustness: it produces the ignored row-level
+predictions used for residual diagnostics. Defaults are 500 CatBoost iterations
+and four threads. Changing parameters is a different experiment.
+
+The frozen evaluation can be rerun with `python -m freight.final_check` in its
+original environment. For another Python version or platform, preserve the
+original report and write a separate reproduction:
+
+```text
+python -m freight.final_check --output-dir reports/final_check_reproduction
+```
+
+The command refuses to overwrite results from a different experiment. Reusing
+these labels for tuning would make them additional development data rather
+than an independent evaluation. `.gitattributes` preserves source/CSV line
+endings across checkouts for the recorded hashes.
+
+## Rebuild the formal report
 
 ```text
 python -m freight.report
 ```
 
-This writes `output/pdf/freight_rate_assessment_report.pdf` using audited metrics
-and the exact scorer chart. ReportLab and PDF verification dependencies are
-already pinned. The prepared document was rendered and visually reviewed on all
-six pages. `LOOM_WALKTHROUGH.md` contains the timed script and recording plan;
-the actual camera-on recording and accessible link must be supplied separately.
+The output is `output/pdf/freight_rate_assessment_report.pdf`. It uses audited
+metrics and the exact scorer-generated December chart. Required ReportLab and
+PDF packages are included in the dependency lock. The prepared six-page report
+was rendered and visually verified.
 
-## Recreate on another computer
+## Validate existing outputs without fitting
 
-With Python 3.12 installed:
-
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+```text
+python score.py --predictions validation_predictions.csv --december-predictions december_predictions.csv
 ```
 
-`requirements.txt` is the unchanged employer-supplied scorer dependency list.
-`requirements-project.txt` includes it and adds scientific computing,
-scikit-learn baselines, CatBoost, model persistence, and PDF report tools.
-CatBoost supplies the selected main and reduced-input chart models.
-`requirements-lock.txt` records the exact installed package versions.
-
-To resolve the allowed version ranges again instead of reproducing the lock:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-project.txt
-```
-
-## Supplied file paths
-
-The supplied README refers to a `data/` directory and underscore-separated
-filenames. The actual CSVs are in the project root and some use hyphens. Keep
-these original inputs intact and use their actual paths.
-
-After generating the two prediction files, run the unchanged scorer:
-
-```powershell
-.\.venv\Scripts\python.exe score.py --predictions validation_predictions.csv --december-predictions december_predictions.csv
-```
-
-`december_predictions.csv` should be a completed copy of
-`december-chart-inputs.csv`, retaining all seven columns and original input values.
-The scorer writes `scorer_results/candidate_december.png`. This command is
-also available independently of the submission-generation command.
+The scorer validates both CSV contracts and generates the fixed December chart.
+It does not measure accuracy. All original inputs remain in the repository
+root; the commands use their supplied filenames and do not overwrite them.

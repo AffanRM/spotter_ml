@@ -40,12 +40,12 @@ joins predictions by ID, and runs the supplied scorer CLI. Refit model binaries
 may have different internal metadata/hashes; prediction values are the
 reproducibility target. Preserve the model bundle manifest with its own models.
 
-## Limits and remaining deliverables
+## Interpretation
 
 The scorer does not calculate accuracy. The internal September-October metrics
 describe models fitted only through August, not these full-data refits. The
 December curve is a conditional model prediction, not a calibrated time-series
 forecast or evidence that holiday effects were learned.
 
-The formal PDF/DOCX report and 2-3 minute camera-on Loom recording remain to be
-prepared. Submission files should accompany the accessible GitHub repository.
+The formal methodology and results are documented in the repository's
+`output/pdf/freight_rate_assessment_report.pdf`.
