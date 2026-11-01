@@ -27,7 +27,9 @@ and extracting and visually reviewing the complete one-page PDF.
 
 Current status: code, dependencies, prediction CSVs, scorer chart, public
 repository access, tests and hosted Windows/Linux checks are complete. The
-formal PDF/DOCX report and recorded camera-on Loom link remain outstanding.
+formal [PDF report](output/pdf/freight_rate_assessment_report.pdf) and
+[timed walkthrough script](LOOM_WALKTHROUGH.md) are prepared. The actual
+recorded camera-on Loom link remains outstanding.
 This document contains candidate instructions; the README presents the solution
 to reviewers.
 
@@ -72,7 +74,7 @@ generates the chart; Spotter calculates final metrics after submission.
 4. Compare feature sets and models, checking leakage and unseen-location behavior (temporal comparison and one fixed city stress test complete; see `reports/robustness/robustness.md`).
 5. Select the model using development results and retrain on eligible labeled data (complete: frozen policy, reserved evaluation, and full-data refits).
 6. Generate both prediction files and run the original scorer (complete: 12,000 final predictions, 31 December predictions, and scorer-generated chart).
-7. Produce the report, repository instructions, and a concise Loom script.
+7. Produce the report, repository instructions, and a concise Loom script (complete; candidate recording and accessible video link remain).
 
 Analysis can be rerun with `python -m freight.explore`; the development model
 comparison runs with `python -m freight.benchmark`; geographic stress and error
@@ -81,5 +83,7 @@ in `MODEL_DECISIONS.md` and evaluated by `python -m freight.final_check`.
 Full-data refitting and prediction generation run with `python -m freight.submission`.
 The full project audit and reviewer-reproducibility fixes are documented in
 `PROJECT_REVIEW.md`; run `python -m freight.audit --require-saved-models` after
-generation. The formal report and Loom preparation are next. Commit/push operations are performed
+generation. The formal report and Loom preparation are complete; record the
+2-3 minute camera-on walkthrough and verify its link access before delivery.
+Commit/push operations are performed
 by the candidate; commands for completed checkpoints are in `GIT_WORKFLOW.md`.

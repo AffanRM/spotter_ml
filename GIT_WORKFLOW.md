@@ -5,7 +5,8 @@ PowerShell or Git Bash/MSYS2 is open in the project folder. The first two
 checkpoints were committed and pushed to `https://github.com/AffanRM/spotter_ml.git`.
 Checkpoint 3 was committed and pushed as `af62a46`, and checkpoint 4 as `cabec32`.
 Checkpoint 5 was committed and pushed as `b70e837`, and checkpoint 6 as `14207a8`.
-Checkpoint 7 was committed and pushed as `7d43baa`. Start with checkpoint 8
+Checkpoint 7 was committed and pushed as `7d43baa`, and checkpoint 8 as `421a38f`.
+Start with checkpoint 9
 for the new changes. Earlier instructions are retained
 for reference.
 
@@ -192,3 +193,21 @@ The README describes the solution, results, setup, outputs, architecture and
 limitations. Candidate delivery instructions remain in `TASK_OVERVIEW.md`.
 The initial Windows/Linux hosted checks passed; no modeling code or prediction
 values changed in this documentation checkpoint.
+
+## Checkpoint 9: formal report and timed walkthrough preparation
+
+```text
+python -m freight.audit --require-saved-models
+git add freight/report.py output/pdf/freight_rate_assessment_report.pdf LOOM_WALKTHROUGH.md
+git add readme.md SETUP.md TASK_OVERVIEW.md PROJECT_REVIEW.md GIT_WORKFLOW.md reports/audit/checks.json
+git diff --cached --stat
+git diff --cached --check
+git commit -m "docs: add formal assessment report and timed Loom walkthrough"
+git push
+git status
+```
+
+To regenerate the report, run `python -m freight.report`. The prepared PDF has
+six visually verified pages and embeds the unchanged supplied scorer chart.
+`LOOM_WALKTHROUGH.md` is a recording script and navigation plan, not a recording.
+Record the camera-on video and verify the real Loom URL before final delivery.

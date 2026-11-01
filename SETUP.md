@@ -120,6 +120,20 @@ Use the lock file for best reproducibility. Identical values across every
 platform/library version are not guaranteed. Reusing a saved model bundle in
 another environment is rejected; regenerate it with the fitting command.
 
+## Generate the formal report
+
+After generating predictions and passing the audit, run:
+
+```text
+python -m freight.report
+```
+
+This writes `output/pdf/freight_rate_assessment_report.pdf` using audited metrics
+and the exact scorer chart. ReportLab and PDF verification dependencies are
+already pinned. The prepared document was rendered and visually reviewed on all
+six pages. `LOOM_WALKTHROUGH.md` contains the timed script and recording plan;
+the actual camera-on recording and accessible link must be supplied separately.
+
 ## Recreate on another computer
 
 With Python 3.12 installed:
